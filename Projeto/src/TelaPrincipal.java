@@ -96,6 +96,7 @@ public class TelaPrincipal extends JFrame {
             }
         });
 
+
         btnEditar.addActionListener(e -> {
             int row = tabela.getSelectedRow();
             if (row != -1) {

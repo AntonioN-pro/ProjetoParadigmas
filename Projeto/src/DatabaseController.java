@@ -25,6 +25,7 @@ public class DatabaseController {
                 + ");";
 
 
+
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
