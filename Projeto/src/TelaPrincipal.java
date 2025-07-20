@@ -3,6 +3,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+
 public class TelaPrincipal extends JFrame {
 
     public TelaPrincipal() {
@@ -19,16 +20,28 @@ public class TelaPrincipal extends JFrame {
         // Campos
         JLabel lblNome = new JLabel("Nome:");
         JTextField txtNome = new JTextField();
+        txtNome.setPreferredSize(new Dimension(200, 25));
+
         JLabel lblGenero = new JLabel("Gênero:");
         JTextField txtGenero = new JTextField();
+        txtGenero.setPreferredSize(new Dimension(200, 25));
+
         JLabel lblAno = new JLabel("Ano:");
         JTextField txtAno = new JTextField();
+        txtAno.setPreferredSize(new Dimension(80, 25)); // 4 dígitos
+
         JLabel lblPlataforma = new JLabel("Plataforma:");
         JTextField txtPlataforma = new JTextField();
+        txtPlataforma.setPreferredSize(new Dimension(200, 25));
+
         JLabel lblNota = new JLabel("Nota:");
         JTextField txtNota = new JTextField();
+        txtNota.setPreferredSize(new Dimension(50, 25)); // Ex: nota de 0 a 10
+
         JLabel lblComentario = new JLabel("Comentário:");
         JTextField txtComentario = new JTextField();
+        txtComentario.setPreferredSize(new Dimension(300, 25));
+
 
         gbc.gridx = 0; gbc.gridy = 0; painel.add(lblNome, gbc);
         gbc.gridx = 1; gbc.gridy = 0; painel.add(txtNome, gbc);

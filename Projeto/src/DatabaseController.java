@@ -14,17 +14,16 @@ public class DatabaseController {
     }
 
     public static void inicializarBanco() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS jogos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                genero TEXT,
-                ano INTEGER,
-                plataforma TEXT,
-                nota INTEGER,
-                comentario TEXT
-            );
-        """;
+        String sql = "CREATE TABLE IF NOT EXISTS jogos ("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "nome TEXT NOT NULL, "
+                + "genero TEXT, "
+                + "ano INTEGER, "
+                + "plataforma TEXT, "
+                + "nota INTEGER, "
+                + "comentario TEXT"
+                + ");";
+
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
