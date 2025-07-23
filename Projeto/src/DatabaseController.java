@@ -2,8 +2,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseController {
+    // Caminho para o banco SQLite — usado para cumprir o requisito de armazenamento permanente
     private static final String DB_URL = "jdbc:sqlite:TESTE.db";
 
+    // Bloco estático: carrega o driver JDBC
+    // Necessário para conectar com o SQLite — requisito técnico para persistência
     static {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -12,7 +15,8 @@ public class DatabaseController {
         }
     }
 
-    // Cria a tabela se não existir
+    // Metodo que cria a tabela no banco caso ainda não exista
+    // Aqui aplicamos o requisito de armazenamento permanente
     public static void inicializarBanco() {
         String sql = "CREATE TABLE IF NOT EXISTS jogos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -26,31 +30,36 @@ public class DatabaseController {
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
+            stmt.execute(sql); // Criação da tabela
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Insere novo jogo (sem ID)
+    // CREATE — insere novo registro no banco de dados
+    // Atende ao requisito: "Cadastro de registros"
     public static void inserirJogo(Jogo jogo) {
         String sql = "INSERT INTO jogos (nome, genero, ano, plataforma, nota, comentario) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Preenche os parâmetros com os dados do objeto
             pstmt.setString(1, jogo.getNome());
             pstmt.setString(2, jogo.getGenero());
             pstmt.setInt(3, jogo.getAno());
             pstmt.setString(4, jogo.getPlataforma());
             pstmt.setInt(5, jogo.getNota());
             pstmt.setString(6, jogo.getComentario());
-            pstmt.executeUpdate();
+
+            pstmt.executeUpdate(); // Executa o INSERT
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Lista todos os jogos
+    // READ — lista todos os jogos do banco
+    // Atende ao requisito: "Listagem de registros"
     public static ArrayList<Jogo> listarJogos() {
         ArrayList<Jogo> lista = new ArrayList<>();
         String sql = "SELECT * FROM jogos";
@@ -60,6 +69,7 @@ public class DatabaseController {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
+                // Construtor com ID → suporte completo ao CRUD
                 Jogo j = new Jogo(
                         rs.getInt("id"),
                         rs.getString("nome"),
@@ -74,28 +84,33 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return lista;
+
+        return lista; // Retorna todos os registros existentes
     }
 
-    // Exclui jogo pelo ID
+    // DELETE — exclui um jogo com base no ID
+    // Atende ao requisito: "Exclusão de registros"
     public static void excluirJogo(int id) {
         String sql = "DELETE FROM jogos WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setInt(1, id);
-            pstmt.executeUpdate();
+            pstmt.executeUpdate(); // Executa o DELETE
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    // Atualiza um jogo usando o ID como referência
+    // UPDATE — atualiza dados de um jogo existente
+    // Atende ao requisito: "Alteração de registros"
     public static void atualizarJogo(Jogo jogo) {
         String sql = "UPDATE jogos SET nome = ?, genero = ?, ano = ?, plataforma = ?, nota = ?, comentario = ? WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setString(1, jogo.getNome());
             pstmt.setString(2, jogo.getGenero());
             pstmt.setInt(3, jogo.getAno());
@@ -103,7 +118,8 @@ public class DatabaseController {
             pstmt.setInt(5, jogo.getNota());
             pstmt.setString(6, jogo.getComentario());
             pstmt.setInt(7, jogo.getId());
-            pstmt.executeUpdate();
+
+            pstmt.executeUpdate(); // Executa o UPDATE
         } catch (SQLException e) {
             e.printStackTrace();
         }

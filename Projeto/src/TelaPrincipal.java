@@ -1,3 +1,4 @@
+// Imports necessários para a interface gráfica e controle de eventos
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -6,15 +7,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+// Classe que representa a interface principal da aplicação
+// Aplica o requisito de Interface Gráfica com Swing
 public class TelaPrincipal extends JFrame {
 
+    // Componentes da interface (formulário)
     private JTextField txtNome, txtGenero, txtAno, txtPlataforma, txtNota;
     private JTextArea txtComentario;
+
+    // Tabela e modelo que exibem os jogos cadastrados
     private JTable tabelaJogos;
     private DefaultTableModel modeloTabela;
 
-    private Integer idSelecionado = null; // armazena ID do jogo selecionado para edição
+    // ID do jogo selecionado (usado para edição)
+    private Integer idSelecionado = null;
 
+    // Construtor da tela principal
     public TelaPrincipal() {
         setTitle("Biblioteca de Jogos 🎮");
         setSize(800, 650);
@@ -26,7 +34,8 @@ public class TelaPrincipal extends JFrame {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Campos
+        // Criação e posicionamento dos campos — parte da Interface Gráfica com Swing
+        // Representam atributos herdados de Midia e estendidos em Jogo (herança aplicada indiretamente)
         JLabel lblNome = new JLabel("Nome:");
         txtNome = new JTextField();
         JLabel lblGenero = new JLabel("Gênero:");
@@ -41,6 +50,7 @@ public class TelaPrincipal extends JFrame {
         txtComentario = new JTextArea(3, 20);
         JScrollPane scrollComentario = new JScrollPane(txtComentario);
 
+        // Posicionamento dos campos no painel
         gbc.gridx = 0; gbc.gridy = 0; painel.add(lblNome, gbc);
         gbc.gridx = 1; painel.add(txtNome, gbc);
         gbc.gridx = 0; gbc.gridy = 1; painel.add(lblGenero, gbc);
@@ -54,11 +64,11 @@ public class TelaPrincipal extends JFrame {
         gbc.gridx = 0; gbc.gridy = 5; painel.add(lblComentario, gbc);
         gbc.gridx = 1; painel.add(scrollComentario, gbc);
 
-        // Tabela
+        // Criação da tabela que exibe os jogos — Listagem de registros
         modeloTabela = new DefaultTableModel(new Object[]{"ID", "Nome", "Gênero", "Ano", "Plataforma", "Nota", "Comentário"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // evita edição direta
+                return false; // impede edição direta
             }
         };
         tabelaJogos = new JTable(modeloTabela);
@@ -67,7 +77,7 @@ public class TelaPrincipal extends JFrame {
         gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
         painel.add(scrollTabela, gbc);
 
-        // Botões
+        // Botões do CRUD — Cadastro, Alteração, Exclusão
         JButton btnCadastrar = new JButton("Cadastrar");
         btnCadastrar.addActionListener(this::cadastrarJogo);
 
@@ -81,17 +91,16 @@ public class TelaPrincipal extends JFrame {
         botoes.add(btnCadastrar);
         botoes.add(btnEditar);
         botoes.add(btnExcluir);
-
         gbc.gridx = 0; gbc.gridy = 7; gbc.gridwidth = 2;
         painel.add(botoes, gbc);
 
         add(painel);
 
-        // Carrega dados e inicializa
+        // Inicialização do banco e carregamento automático dos dados — Armazenamento Permanente
         DatabaseController.inicializarBanco();
         carregarJogos();
 
-        // Ao clicar na tabela, carrega os dados no formulário
+        // Evento ao clicar na tabela — preenche os campos para edição
         tabelaJogos.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int row = tabelaJogos.getSelectedRow();
@@ -110,7 +119,7 @@ public class TelaPrincipal extends JFrame {
         setVisible(true);
     }
 
-    // Cadastrar novo jogo
+    // Cadastro de novo jogo — Requisito: Cadastro de registros
     private void cadastrarJogo(ActionEvent e) {
         try {
             String nome = txtNome.getText();
@@ -121,15 +130,15 @@ public class TelaPrincipal extends JFrame {
             String comentario = txtComentario.getText();
 
             Jogo jogo = new Jogo(nome, genero, ano, nota, comentario, plataforma);
-            DatabaseController.inserirJogo(jogo);
+            DatabaseController.inserirJogo(jogo); // Armazena no banco
             limparCampos();
-            carregarJogos();
+            carregarJogos(); // Atualiza a tabela
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Ano e Nota devem ser inteiros.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Atualizar jogo existente
+    // Atualização — Requisito: Alteração de registros
     private void editarJogo(ActionEvent e) {
         if (idSelecionado == null) {
             JOptionPane.showMessageDialog(this, "Selecione um jogo para editar.", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -153,7 +162,7 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    // Excluir jogo selecionado
+    // Exclusão — Requisito: Exclusão de registros
     private void excluirJogo(ActionEvent e) {
         int linha = tabelaJogos.getSelectedRow();
         if (linha == -1) {
@@ -170,7 +179,7 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    // Limpa campos
+    // Limpa os campos do formulário
     private void limparCampos() {
         txtNome.setText("");
         txtGenero.setText("");
@@ -181,10 +190,11 @@ public class TelaPrincipal extends JFrame {
         idSelecionado = null;
     }
 
-    // Recarrega tabela
+    // Recarrega os dados na tabela após qualquer operação
+    // Usa Collections (List<Jogo>) — requisito aplicado
     private void carregarJogos() {
         modeloTabela.setRowCount(0);
-        List<Jogo> jogos = DatabaseController.listarJogos();
+        List<Jogo> jogos = DatabaseController.listarJogos(); // Requisito: uso de Collections
         for (Jogo jogo : jogos) {
             modeloTabela.addRow(new Object[]{
                     jogo.getId(),
@@ -198,6 +208,7 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
+    // Metodo principal — ponto de entrada do programa
     public static void main(String[] args) {
         SwingUtilities.invokeLater(TelaPrincipal::new);
     }
