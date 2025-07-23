@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -13,6 +12,7 @@ public class DatabaseController {
         }
     }
 
+    // Cria a tabela se não existir
     public static void inicializarBanco() {
         String sql = "CREATE TABLE IF NOT EXISTS jogos ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -24,8 +24,6 @@ public class DatabaseController {
                 + "comentario TEXT"
                 + ");";
 
-
-
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
@@ -34,6 +32,7 @@ public class DatabaseController {
         }
     }
 
+    // Insere novo jogo (sem ID)
     public static void inserirJogo(Jogo jogo) {
         String sql = "INSERT INTO jogos (nome, genero, ano, plataforma, nota, comentario) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -51,6 +50,7 @@ public class DatabaseController {
         }
     }
 
+    // Lista todos os jogos
     public static ArrayList<Jogo> listarJogos() {
         ArrayList<Jogo> lista = new ArrayList<>();
         String sql = "SELECT * FROM jogos";
@@ -61,6 +61,7 @@ public class DatabaseController {
 
             while (rs.next()) {
                 Jogo j = new Jogo(
+                        rs.getInt("id"),
                         rs.getString("nome"),
                         rs.getString("genero"),
                         rs.getInt("ano"),
@@ -76,35 +77,35 @@ public class DatabaseController {
         return lista;
     }
 
-    public static void excluirJogoPorNome(String nome) {
-        String sql = "DELETE FROM jogos WHERE nome = ?";
+    // Exclui jogo pelo ID
+    public static void excluirJogo(int id) {
+        String sql = "DELETE FROM jogos WHERE id = ?";
+
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nome);
+            pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void atualizarJogo(Jogo jogoAntigo, Jogo jogoNovo) {
-        String sql = "UPDATE jogos SET nome = ?, genero = ?, ano = ?, plataforma = ?, nota = ?, comentario = ? WHERE nome = ?";
+    // Atualiza um jogo usando o ID como referência
+    public static void atualizarJogo(Jogo jogo) {
+        String sql = "UPDATE jogos SET nome = ?, genero = ?, ano = ?, plataforma = ?, nota = ?, comentario = ? WHERE id = ?";
+
         try (Connection conn = DriverManager.getConnection(DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, jogoNovo.getNome());
-            pstmt.setString(2, jogoNovo.getGenero());
-            pstmt.setInt(3, jogoNovo.getAno());
-            pstmt.setString(4, jogoNovo.getPlataforma());
-            pstmt.setInt(5, jogoNovo.getNota());
-            pstmt.setString(6, jogoNovo.getComentario());
-            pstmt.setString(7, jogoAntigo.getNome()); // critério para localizar
+            pstmt.setString(1, jogo.getNome());
+            pstmt.setString(2, jogo.getGenero());
+            pstmt.setInt(3, jogo.getAno());
+            pstmt.setString(4, jogo.getPlataforma());
+            pstmt.setInt(5, jogo.getNota());
+            pstmt.setString(6, jogo.getComentario());
+            pstmt.setInt(7, jogo.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
 }
