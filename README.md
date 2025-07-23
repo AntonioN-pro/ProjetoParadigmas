@@ -1,72 +1,51 @@
-# UNIVERSIDADE FEDERAL DO MARANHÃO  
-## Centro de Ciências Exatas e Tecnologia  
-### Bacharelado Interdisciplinar em Ciência e Tecnologia  
-**Disciplina: Paradigmas de Programação**  
-**Atividade: 3ª Avaliação**
+# Avaliador de Jogos - CRUD Java com Swing
+
+UNIVERSIDADE FEDERAL DO MARANHÃO  
+Centro de Ciências Exatas e Tecnologia  
+Bacharelado Interdisciplinar em Ciência e Tecnologia  
+Disciplina: Paradigmas de Programação
+---
+## 📌 Descrição do Projeto
+
+Aplicação CRUD para avaliação de jogos com interface gráfica em Java Swing, implementando os conceitos de herança, polimorfismo e armazenamento persistente em banco de dados.
 
 ---
+## 🎮 Componentes Principais
 
-## 📌 Descrição da Atividade
+### Arquivos do Projeto:
+- **`TelaPrincipal.java`**  
+  Classe principal que contém a interface gráfica e a lógica de interação do usuário.
 
-Esta atividade tem como objetivo desenvolver uma **aplicação com interface gráfica em Java**, que permita o **cadastro, alteração e exclusão de registros**, utilizando os conceitos de **herança** e **polimorfismo**. A interface deve ser construída com a biblioteca `javax.swing`.
+- **`Midia.java`**  
+  Classe abstrata que define atributos e métodos comuns para todas as mídias, permitindo herança.
 
----
+- **`Jogo.java`**  
+  Subclasse concreta de `Midia` que implementa características específicas de jogos (plataforma, gênero, avaliação).
 
-## ✅ Requisitos Obrigatórios
-
-- [x] Explicação do funcionamento do programa  
-- [x] Uso de **Collections**  
-- [x] Aplicação dos conceitos de **herança** e **polimorfismo** (exceto apenas sobrescrever `toString()`)  
-- [x] Implementação de **armazenamento permanente** (arquivos ou banco de dados)  
-- [x] Interface gráfica com **Swing**  
-
-> ⚠️ **Atenção:** Não será aceita a utilização da IDE **NetBeans** para a construção do projeto.
+- **`DatabaseController.java`**  
+  Responsável por todas as operações com o banco de dados SQLite, incluindo CRUD da lista de jogos.
 
 ---
-
-## 📂 Estrutura do Projeto
-
-/src
-├── model/ # Classes que representam os dados (com herança e polimorfismo)
-├── controller/ # Lógica de manipulação dos dados e conexão com o armazenamento
-└── view/ # Interface gráfica usando javax.swing
-/data
-└── registros.txt # Arquivo para armazenamento permanente (exemplo)
-README.md
-
-
+## ✅ Funcionalidades Implementadas
+- Cadastro, edição e exclusão de avaliações de jogos
+- Herança: `Jogo` estende `Midia` (compartilhando atributos básicos)
+- Polimorfismo: Métodos com comportamentos específicos em `Jogo`
+- Armazenamento persistente em banco de dados SQLite
+- Interface gráfica com componentes Swing
 ---
-
 ## 🧠 Conceitos Aplicados
-
-- **Herança**: Classes especializadas herdando atributos e comportamentos comuns.
-- **Polimorfismo**: Métodos sobrescritos e uso de referências genéricas.
-- **Collections**: Uso de `ArrayList`, `HashMap`, ou outras estruturas da `java.util`.
-- **Armazenamento**: Manipulação de arquivos `.txt`, `.csv` ou conexão com banco de dados.
-- **Interface gráfica (GUI)**: Implementada com `JFrame`, `JPanel`, `JButton`, `JTextField`, etc.
-
+- **Herança**: Hierarquia entre `Midia` (classe abstrata) e `Jogo`
+- **Polimorfismo**: Sobrescrita de métodos para comportamentos específicos
+- **Persistência**: Armazenamento em banco de dados via `DatabaseController`
+- **GUI**: Componentes Swing em `TelaPrincipal`
 ---
-
-## 📅 Datas Importantes
-
-- 📤 **Entrega**: até **23/07/2025** via SIGAA (em formato `.zip`)
-- 👩‍🏫 **Defesa**: dia **25/07/2025** com apresentação obrigatória para validação da nota
-
+## 👥 Equipe
+- **Antonio Neto Moura Melo** - 2022003488
+- **Carla Sofia Santos Ribeiro** - 2022014015
+- **Marcos Davi Taveira de Sousa** - 2022007431
 ---
-
-## 👥 Participantes
-
-- Nome 1 - Matrícula 1  
-- Nome 2 - Matrícula 2  
-- Nome 3 - Matrícula 3  
-
-*(Preencher conforme a equipe do projeto)*
-
+## 📥 Como Executar
+1. Compilar os arquivos Java na pasta `/src`
+2. Executar `TelaPrincipal.java` (contém o método `main`)
+3. O banco de dados será criado automaticamente na primeira execução
 ---
-
-## 🚫 Observações Finais
-
-- O projeto deve ser enviado **zipado** via SIGAA.
-- A **presença na defesa é obrigatória** para contabilização da nota.
-- Projetos feitos em **NetBeans** não serão aceitos.
-
