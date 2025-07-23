@@ -5,6 +5,59 @@ Centro de Ciências Exatas e Tecnologia
 Bacharelado Interdisciplinar em Ciência e Tecnologia  
 Disciplina: Paradigmas de Programação
 ---
+# 📖 Contexto do Projeto: Biblioteca de Jogos 🎮
+
+## 🎯 Cenário
+
+Um cliente gamer procurou nossa equipe com uma necessidade simples, mas muito comum:  
+ele queria uma **aplicação para organizar os jogos que já jogou**, registrar a **plataforma**, o **gênero**, a **nota que deu** e escrever **comentários pessoais** sobre cada experiência.
+
+Ele precisava de uma ferramenta que fosse:
+
+- 📋 Simples e prática
+- 🖥️ Com interface gráfica (não queria usar Excel ou terminal)
+- 💾 Que guardasse os dados entre os usos
+- 💬 Que permitisse editar ou excluir os registros com facilidade
+
+---
+
+## 🧩 Solução desenvolvida
+
+Para atender a essa demanda, desenvolvemos uma **aplicação em Java com interface gráfica usando Swing**, composta por:
+
+- Uma tela de cadastro de jogos com campos para:
+  - Nome do jogo
+  - Gênero
+  - Plataforma
+  - Ano
+  - Nota (de 0 a 10)
+  - Comentário pessoal
+- Uma tabela dinâmica que exibe todos os jogos cadastrados
+- Botões para:
+  - ➕ Cadastrar novo jogo
+  - ✏️ Editar um jogo existente
+  - 🗑️ Excluir um jogo selecionado
+
+---
+
+## 🧠 Tecnologias e conceitos aplicados
+
+- **Java com Swing**: Interface gráfica
+- **JDBC com SQLite**: Armazenamento permanente dos dados
+- **Herança e Polimorfismo**: `Jogo` herda de `Midia` e sobrescreve `exibirDetalhes()`
+- **Collections**: Lista de jogos carregada com `List<Jogo>`
+- **Organização em camadas (MVC simplificado)**:
+  - `model` (Midia, Jogo)
+  - `view` (TelaPrincipal)
+  - `controller` (DatabaseController)
+
+---
+
+## ✅ Resultado
+
+A aplicação cumpre todos os requisitos solicitados pelo cliente e também os critérios avaliativos da disciplina de **Paradigmas de Programação**. É leve, funcional e facilmente extensível para incluir outros tipos de mídia no futuro, como filmes ou séries.
+
+
 ## 📌 Descrição do Projeto
 
 Aplicação CRUD para avaliação de jogos com interface gráfica em Java Swing, implementando os conceitos de herança, polimorfismo e armazenamento persistente em banco de dados.
